@@ -1,10 +1,9 @@
 from unittest import TestCase
-from enums import *
+from dgws_api.functions import *
 
 
 class Test(TestCase):
     def test_search_name(self):
-        from dgws import search_names
         names = ['Aspirin']
         try:
             search_names(names)
@@ -12,7 +11,6 @@ class Test(TestCase):
             self.fail()
 
     def test_search_exact(self):
-        from dgws import search_structure
         chime_string = "CYAAFQwAYewQFPfJfx616ZLb6rNugDNdp8dA8cRIkKkpZ55HBpDGtTgMMRQ$XWYlh9ME^V9Z6IcS98biuRVPy8whVCDx5e6NILuAen5LsA$j1$6Gaty9$tJzeoTfv$o3GKH8tnf^NkJ^RCJYpzLUw2SgFDaACHDiRBxk4MgoaKDVGYlPxcfvpQ4aGC7Sph4SOgCzvxaR0g1olMiK2EqiyHkiKYgaN51qxOXSXrZeYQSdi$smMJDSxNy1lnA4iWYsbgF6oL3OMVZj2gSC05NNqWjqGXyIRyN0Y638ezmbK8luWXxoEMrto5FNnfB3x1kY4M1^nQUVlV4I7$iudF^Q^YNfeQLlPKuUUWqKSq2Z11Ob71ZRMnUfSwVvy92cm0aaqRdKSKuk0TryKb$NuSymq58OWEf1^1HY5w7Vwocufewm7e7MN8fTeTvjiA"
         smiles_string = "CC(=O)Oc1ccccc1C(=O)O"
         molfile_string = """
