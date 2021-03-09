@@ -1,7 +1,7 @@
 from zeep import Client, Settings
 from zeep.plugins import HistoryPlugin
 import json
-from enums import *
+from .enums import *
 
 with open("./config.json") as config_file:
     config = json.load(config_file)
