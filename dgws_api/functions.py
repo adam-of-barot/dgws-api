@@ -3,16 +3,32 @@ from typing import List
 from .classes import *
 
 
-def search_names(names: List[str], request: ServiceRequest = None, page: int = 1):
+def _service_request_dict(request: ServiceRequest = None, page: int = 1):
     if not request:
-        request = ServiceRequest(page=page).__dict__
+        request = ServiceRequest(page=page)
+    request.set_page(page)
+    return request.__dict__
+
+
+def search_names(names: List[str], request: ServiceRequest = None, page: int = 1):
+    request = _service_request_dict(request, page)
     return client.service.getMoleculesByNames(request, names)
 
 
 def search_structure(structures: List[str], search_type: MoleculeSearchType, request: ServiceRequest = None, page: int = 1):
-    if not request:
-        request = ServiceRequest(page=page).__dict__
+    request = _service_request_dict(request, page)
     searches = []
-    for structure in structures:
-        searches.append(MoleculeSearch(structure=structure, search_type=search_type).as_dict())
+    length = len(structures)
+    for idx, structure in enumerate(structures):
+        if idx == length:
+            search_op = SearchOperator.NONE
+        else:
+            search_op = SearchOperator.OR
+        searches.append(
+            MoleculeSearch(
+                structure=structure,
+                search_type=search_type,
+                search_op=search_op
+            ).as_dict()
+        )
     return client.service.getMoleculesByStructure(request, searches)
