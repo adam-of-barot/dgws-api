@@ -2,8 +2,11 @@ from zeep import Client, Settings
 from zeep.plugins import HistoryPlugin
 import json
 from .enums import *
+from pathlib import Path
 
-with open("./config.json") as config_file:
+base_path = Path(__file__).parent
+file_path = (base_path / "./config.json").resolve()
+with open(file_path) as config_file:
     config = json.load(config_file)
 
 history = HistoryPlugin()
