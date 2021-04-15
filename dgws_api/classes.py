@@ -33,7 +33,7 @@ class ServiceRequest:
         self.licenseKey = config['LicenseKey']
         self.count = 10
         self.page = {
-            'offset': (page - 1) * self.count,
+            'offset': self._calc_offset(page),
             'count': self.count
         }
         self.moleculeFlags = molecule_flags
@@ -42,13 +42,19 @@ class ServiceRequest:
         self.statefulQueryKey = stateful_query_key
         self.exclusiveFlagHits = exclusive_flag_hits
 
+    def _calc_offset(self, page: int):
+        return (page - 1) * self.count
+
+    def set_page(self, page: int):
+        self.page['offset'] = self._calc_offset(page)
+
 
 class MoleculeSearch:
     """
     Defines a molecular structure based query
     """
     def __init__(self,
-                 structure: str,  # can be MOL file string or CHIME string
+                 structure: str,  # can be MOL file string or CHIME string or SMILES string
                  search_type: MoleculeSearchType = MoleculeSearchType.EXACT,
                  negate: bool = False,
                  search_op: SearchOperator = SearchOperator.NONE,
