@@ -4,6 +4,7 @@ import json
 from .enums import *
 from pathlib import Path
 
+# Load config file
 base_path = Path(__file__).parent
 file_path = (base_path / "./config.json").resolve()
 with open(file_path) as config_file:
@@ -22,6 +23,7 @@ Otherwise, the server will return no XML data, and zeep will throw a zeep.except
 class ServiceRequest:
     """
     Defines what kind of data to return from the service
+    Input a list of molecule_flags or reaction_flags to retrieve more data
     """
     def __init__(self,
                  page: int = 1,
@@ -42,6 +44,9 @@ class ServiceRequest:
         self.statefulQueryKey = stateful_query_key
         self.exclusiveFlagHits = exclusive_flag_hits
 
+    def as_dict(self):
+        return self.__dict__
+
     def _calc_offset(self, page: int):
         return (page - 1) * self.count
 
@@ -52,6 +57,7 @@ class ServiceRequest:
 class MoleculeSearch:
     """
     Defines a molecular structure based query
+    In case of multiple molecule searches, create multiple MoleculeSearch objects for each structure
     """
     def __init__(self,
                  structure: str,  # can be MOL file string or CHIME string or SMILES string
