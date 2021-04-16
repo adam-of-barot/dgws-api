@@ -1,13 +1,13 @@
 from typing import List
-
 from .classes import *
 
 
-def _service_request_dict(request: ServiceRequest = None, page: int = 1):
+def _service_request_dict(request: ServiceRequest = None, page: int = None):
     if not request:
-        request = ServiceRequest(page=page)
-    request.set_page(page)
-    return request.__dict__
+        request = ServiceRequest()
+    if page:
+        request.set_page(page)
+    return request.as_dict()
 
 
 def search_names(names: List[str], request: ServiceRequest = None, page: int = 1):
