@@ -15,7 +15,7 @@ class Test(TestCase):
         chimes = [el.strip() for el in file.readlines()]
 
     with open('./molfile.mol') as file:
-        molfile = [file.read().strip()]
+        molfile = [file.read()]
 
     def test_service_request_function(self):
         from dgws_api.functions import _service_request_dict
@@ -39,10 +39,10 @@ class Test(TestCase):
         try:
             search_structure([self.chimes[0]], MoleculeSearchType.EXACT)
             print('Single CHIME search successful')
+            search_structure(self.molfile, MoleculeSearchType.EXACT)
+            print('Single molfile search successful')
             search_structure([self.smiles[0]], MoleculeSearchType.EXACT)  # does not seem to work with SMILES
             print('Single SMILES search successful')
-            search_structure(self.molfile, MoleculeSearchType.EXACT)  # molfile search broken too
-            print('Single molfile search successful')
         except Exception as e:
             self.fail(e)
 
