@@ -1,4 +1,4 @@
-from zeep import Client, Settings
+from zeep import CachingClient
 from zeep.plugins import HistoryPlugin
 import json
 from .enums import *
@@ -11,7 +11,7 @@ with open(file_path) as config_file:
     config = json.load(config_file)
 
 history = HistoryPlugin()
-client = Client(config['WSDL'], plugins=[history])
+client = CachingClient(config['WSDL'], plugins=[history])
 
 """
 IMPORTANT
