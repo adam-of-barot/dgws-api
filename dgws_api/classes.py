@@ -1,7 +1,7 @@
 from zeep import CachingClient
 from zeep.plugins import HistoryPlugin
 import json
-from .enums import *
+from dgws_api.enums import *
 from pathlib import Path
 
 # Load config file
@@ -27,13 +27,14 @@ class ServiceRequest:
     """
     def __init__(self,
                  page: int = 1,
+                 count: int = 20,
                  molecule_flags: MoleculeRetrievalFlags = MoleculeRetrievalFlags.IDENTIFICATION,
                  reaction_flags: ReactionRetrievalFlags = ReactionRetrievalFlags.NO_STRUCTURE,
                  source_filter: DataSource = DataSource.CINDEX,
                  stateful_query_key: str = '',
                  exclusive_flag_hits: bool = True):
         self.licenseKey = config['LicenseKey']
-        self.count = 10
+        self.count = count
         self.page = {
             'offset': self._calc_offset(page),
             'count': self.count

@@ -1,22 +1,25 @@
 from typing import List
-from .classes import *
+from dgws_api.classes import *
 
 
-def _service_request_dict(request: ServiceRequest = None, page: int = None):
-    if not request:
-        request = ServiceRequest()
+def _service_request_dict(request: ServiceRequest = ServiceRequest(),
+                          page: int = None, page_size: int = None):
+    if page_size:
+        request.count = page_size
     if page:
         request.set_page(page)
     return request.as_dict()
 
 
-def search_names(names: List[str], request: ServiceRequest = None, page: int = 1):
-    request = _service_request_dict(request, page)
+def search_names(names: List[str], request: ServiceRequest = None,
+                 page: int = 1, page_size: int = 20):
+    request = _service_request_dict(request, page, page_size)
     return client.service.getMoleculesByNames(request, names)
 
 
-def search_structure(structures: List[str], search_type: MoleculeSearchType, request: ServiceRequest = None, page: int = 1):
-    request = _service_request_dict(request, page)
+def search_structure(structures: List[str], search_type: MoleculeSearchType, request: ServiceRequest = None,
+                     page: int = 1, page_size: int = 20):
+    request = _service_request_dict(request, page, page_size)
     searches = []
     length = len(structures)
     for idx, structure in enumerate(structures):
