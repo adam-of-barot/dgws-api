@@ -2,8 +2,10 @@ from typing import List
 from dgws_api.classes import *
 
 
-def _service_request_dict(request: ServiceRequest = ServiceRequest(),
+def _service_request_dict(request: ServiceRequest = None,
                           page: int = None, page_size: int = None):
+    if not request:
+        request = ServiceRequest()
     if page_size:
         request.count = page_size
     if page:
