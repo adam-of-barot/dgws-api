@@ -7,7 +7,7 @@ def _service_request_dict(request: ServiceRequest = None,
     if not request:
         request = ServiceRequest()
     if page_size:
-        request.count = page_size
+        request.set_count(page_size)
     if page:
         request.set_page(page)
     return request.as_dict()

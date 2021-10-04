@@ -37,7 +37,7 @@ class ServiceRequest:
         self.count = count
         self.page = {
             'offset': self._calc_offset(page),
-            'count': self.count
+            'count': self.get_count()
         }
         self.moleculeFlags = molecule_flags
         self.reactionFlags = reaction_flags
@@ -53,6 +53,12 @@ class ServiceRequest:
 
     def set_page(self, page: int):
         self.page['offset'] = self._calc_offset(page)
+
+    def set_count(self, count: int):
+        self.count = count
+
+    def get_count(self):
+        return self.count
 
 
 class MoleculeSearch:
