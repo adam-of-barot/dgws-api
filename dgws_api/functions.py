@@ -1,6 +1,8 @@
 from typing import List
 from dgws_api.classes import *
 
+DEFAULT_PAGE_SIZE = 200
+
 
 def _service_request_dict(request: ServiceRequest = None,
                           page: int = None, page_size: int = None):
@@ -14,13 +16,19 @@ def _service_request_dict(request: ServiceRequest = None,
 
 
 def search_names(names: List[str], request: ServiceRequest = None,
-                 page: int = 1, page_size: int = 20):
+                 page: int = 1, page_size: int = DEFAULT_PAGE_SIZE):
     request = _service_request_dict(request, page, page_size)
     return client.service.getMoleculesByNames(request, names)
 
 
+def search_ids(ids: List[int], request: ServiceRequest = None,
+               page: int = 1, page_size: int = DEFAULT_PAGE_SIZE):
+    request = _service_request_dict(request, page, page_size)
+    return client.service.getMoleculesById(request, ids)
+
+
 def search_structure(structures: List[str], search_type: MoleculeSearchType, request: ServiceRequest = None,
-                     page: int = 1, page_size: int = 20):
+                     page: int = 1, page_size: int = DEFAULT_PAGE_SIZE):
     request = _service_request_dict(request, page, page_size)
     searches = []
     length = len(structures)
