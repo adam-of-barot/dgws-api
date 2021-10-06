@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from dgws_api.classes import *
 
 DEFAULT_PAGE_SIZE = 200
@@ -21,7 +21,7 @@ def search_names(names: List[str], request: ServiceRequest = None,
     return client.service.getMoleculesByNames(request, names)
 
 
-def search_ids(ids: List[int], request: ServiceRequest = None,
+def search_ids(ids: List[Union[int, str]], request: ServiceRequest = None,
                page: int = 1, page_size: int = DEFAULT_PAGE_SIZE):
     request = _service_request_dict(request, page, page_size)
     objects = [{'id': i} for i in ids]

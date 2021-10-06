@@ -8,6 +8,9 @@ class Test(TestCase):
     with open('./names.txt') as file:
         names = [el.strip() for el in file.readlines()]
 
+    with open('./ids.txt') as file:
+        ids = [el.strip() for el in file.readlines()]
+
     with open('./smiles.txt') as file:
         smiles = [el.strip() for el in file.readlines()]
 
@@ -32,6 +35,13 @@ class Test(TestCase):
         try:
             search_names(self.names)
             print('Name search successful')
+        except Exception as e:
+            self.fail(e)
+
+    def test_search_ids(self):
+        try:
+            search_ids(self.ids)
+            print('ID search successful')
         except Exception as e:
             self.fail(e)
 
