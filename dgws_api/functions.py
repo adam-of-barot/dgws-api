@@ -24,7 +24,8 @@ def search_names(names: List[str], request: ServiceRequest = None,
 def search_ids(ids: List[int], request: ServiceRequest = None,
                page: int = 1, page_size: int = DEFAULT_PAGE_SIZE):
     request = _service_request_dict(request, page, page_size)
-    return client.service.getMoleculesById(request, ids)
+    objects = [{'id': i} for i in ids]
+    return client.service.getMoleculesById(request, objects)
 
 
 def search_structure(structures: List[str], search_type: MoleculeSearchType, request: ServiceRequest = None,
