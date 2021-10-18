@@ -27,17 +27,16 @@ class ServiceRequest:
     """
     def __init__(self,
                  page: int = 1,
-                 count: int = 20,
+                 count: int = 200,
                  molecule_flags: MoleculeRetrievalFlags = MoleculeRetrievalFlags.IDENTIFICATION,
                  reaction_flags: ReactionRetrievalFlags = ReactionRetrievalFlags.NO_STRUCTURE,
                  source_filter: DataSource = DataSource.CINDEX,
                  stateful_query_key: str = '',
                  exclusive_flag_hits: bool = True):
         self.licenseKey = config['LicenseKey']
-        self.count = count
         self.page = {
-            'offset': self._calc_offset(page),
-            'count': self.get_count()
+            'offset': self._calc_offset(page, count),
+            'count': count
         }
         self.moleculeFlags = molecule_flags
         self.reactionFlags = reaction_flags
@@ -48,17 +47,19 @@ class ServiceRequest:
     def as_dict(self):
         return self.__dict__
 
-    def _calc_offset(self, page: int):
-        return (page - 1) * self.count
+    def _calc_offset(self, page: int, count: int = None):
+        if not count and self.page:
+            count = self.get_count()
+        return (page - 1) * count
 
     def set_page(self, page: int):
         self.page['offset'] = self._calc_offset(page)
 
     def set_count(self, count: int):
-        self.count = count
+        self.page['count'] = count
 
     def get_count(self):
-        return self.count
+        return self.page.get('count')
 
 
 class MoleculeSearch:
