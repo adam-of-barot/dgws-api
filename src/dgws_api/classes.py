@@ -1,8 +1,9 @@
 from zeep import CachingClient
 from zeep.plugins import HistoryPlugin
 import json
-from dgws_api.enums import *
+from .enums import *
 from pathlib import Path
+from datetime import datetime
 
 # Load config file
 base_path = Path(__file__).parent
@@ -60,6 +61,14 @@ class ServiceRequest:
 
     def get_count(self):
         return self.page.get('count')
+
+    @staticmethod
+    def create_new_stateful_key():
+        ts = int(datetime.now().timestamp())
+        return 'BB{}'.format(ts)
+
+    def set_stateful_key(self):
+        self.statefulQueryKey = self.create_new_stateful_key()
 
 
 class MoleculeSearch:

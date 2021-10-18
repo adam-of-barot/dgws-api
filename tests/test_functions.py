@@ -1,5 +1,6 @@
 from unittest import TestCase
-from dgws_api.functions import *
+from src.dgws_api.functions import *
+from src.dgws_api.functions import _service_request_dict
 
 
 class Test(TestCase):
@@ -21,7 +22,6 @@ class Test(TestCase):
         molfile = [file.read()]
 
     def test_service_request_function(self):
-        from dgws_api.functions import _service_request_dict
         # default return should be a basic ServiceRequest object as a dict with page=1 and count 200
         self.assertEqual(_service_request_dict(), ServiceRequest(page=1, count=200).__dict__)
         # if 'request' argument is given, return that ServiceRequest object as a dict

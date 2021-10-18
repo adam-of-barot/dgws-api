@@ -28,13 +28,31 @@ names = ['Aspirin']
 search_names(names)
 ```
 
-The example below demonstrates how to make structure based queries to the web service.
+The example below demonstrates how to make structure based queries to the web service. I've found that you can send structure information in MDL Molfile or CHIME string formats. SMILES unfortunately don't seem to work.
 
 ```python
 from dgws_api.functions import search_structure
 
-smiles = ['c1ccccc1']
-search_structure(smiles)
+molblock = """
+
+  ACCLDraw05262119162D
+
+  6  6  0  0  0  0  0  0  0  0999 V2000
+    7.3069   -5.4019    0.0000 N   0  0  0  0  0  0  0  0  0  0  0  0
+    6.3515   -4.7078    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    6.7164   -3.5846    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    7.8973   -3.5846    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    8.2622   -4.7078    0.0000 N   0  0  3  0  0  0  0  0  0  0  0  0
+    9.4031   -5.0135    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+  1  2  2  0  0  0  0
+  2  3  1  0  0  0  0
+  3  4  2  0  0  0  0
+  4  5  1  0  0  0  0
+  5  1  1  0  0  0  0
+  5  6  1  0  0  0  0
+M  END
+"""
+search_structure([molblock])
 ```
 
 The module is opinionated, and will load basic default configurations for underlying objects if the functions are not supplied with them.
