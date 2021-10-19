@@ -32,6 +32,7 @@ The example below demonstrates how to make structure based queries to the web se
 
 ```python
 from dgws_api.functions import search_structure
+from dgws_api.enums import MoleculeSearchType
 
 molblock = """
 
@@ -52,7 +53,7 @@ molblock = """
   5  6  1  0  0  0  0
 M  END
 """
-search_structure([molblock])
+search_structure([molblock], MoleculeSearchType.EXACT)
 ```
 
 The module is opinionated, and will load basic default configurations for underlying objects if the functions are not supplied with them.
@@ -67,6 +68,53 @@ from dgws_api.enums import MoleculeRetrievalFlags
 request = ServiceRequest(molecule_flags=MoleculeRetrievalFlags.PROCUREMENT_PRICING)
 names = ['Aspirin']
 search_names(names, request)
+```
+
+In the case of large queries, the DGWS docs suggest using stateful queries to increase the efficiency of data retrieval.
+In order to perform a stateful query, one needs to provide the service with a ServiceRequest that has the statefulQueryKey property set.
+For convenience, the ServiceRequest class comes with a built-in stateful query key generator method, but the user can provide their own key as well.
+
+When a query would return more records than the allowed page size, then response.queryCount will be -1.
+To get the next page of the query, one would send the same request, but increase the page by 1.
+Once the last page is reached, queryCount will become the total number of records returned.
+
+```python
+from dgws_api.functions import search_structure, close_stateful_query
+from dgws_api.classes import ServiceRequest
+from dgws_api.enums import MoleculeRetrievalFlags, MoleculeSearchType
+
+molblock = """
+  ACCLDraw10182116242D
+
+  6  5  0  0  0  0  0  0  0  0999 V2000
+   11.3438   -8.5313    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+   12.3666   -7.9407    0.0000 B   0  0  0  0  0  0  0  0  0  0  0  0
+   12.3666   -6.7592    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+   13.3898   -8.5314    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+   14.4130   -7.9407    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+   11.3434   -6.1685    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0
+  1  2  1  0  0  0  0
+  2  3  1  0  0  0  0
+  2  4  1  0  0  0  0
+  4  5  1  0  0  0  0
+  3  6  1  0  0  0  0
+M  END
+"""
+
+request = ServiceRequest(molecule_flags=MoleculeRetrievalFlags.ID_ONLY)
+request.create_new_stateful_key()
+page = 1
+done = False
+records = []
+
+while not done:
+    response = search_structure([molblock], MoleculeSearchType.SUBSTRUCTURE, request)
+    if response.queryCount == -1 or response.containedCount == 0:
+        done = True
+        close_stateful_query(request)  # docs advise to close the query upon getting all the data
+    else:
+        page += 1
+    records += response.records
 ```
 
 Other python modules used
