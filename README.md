@@ -13,7 +13,14 @@ The [Developer's guide](https://www.discoverygate.com/webservice_docs/1.2/docs/d
 
 How to install
 -----------
-To be added
+Installing via pip through the GitHub repo:
+```commandline
+python -m pip install git+https://github.com/adam-of-barot/dgws-api.git
+```
+Installing directly with pip & setup.py:
+```commandline
+pip install .
+```
 
 How to use
 -----------
